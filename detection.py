@@ -15,12 +15,8 @@ def detectFace(img, gray, port, val, *settings):
 
         coords = ""
         
-        if not val:
-            cv2.rectangle(img, (x, y), (x + w, y + h), (0, 0, 255), 2)
-            cv2.putText(img, "victim", (x, y+30), cv2.FONT_HERSHEY_COMPLEX, 0.8, (0, 0, 255), 1)
-        elif val:
-            cv2.rectangle(img, (x, y), (x + w, y + h), (0, 255, 0), 2)
-            cv2.putText(img, "jar", (x, y+30), cv2.FONT_HERSHEY_COMPLEX, 0.8, (0, 255, 0), 1)
+        cv2.rectangle(img, (x, y), (x + w, y + h), (0, 255, 0), 2)
+        cv2.putText(img, "jar", (x, y+30), cv2.FONT_HERSHEY_COMPLEX, 0.8, (0, 255, 0), 1)
 
         x1 = settings[2][1] + (x / settings[0][0])
         y1 = settings[2][3] - (y / settings[0][1])
