@@ -1,6 +1,6 @@
 #imports important modules
 from json.decoder import JSONDecodeError
-import json, serial, time
+import json, serial
 import calculate
 import detection as dec
 import cv2 as cv, sizematters as size
@@ -26,15 +26,11 @@ try:
     jsonFile = open("calibration.json", "r")
 except (Exception, JSONDecodeError):
     port.close()
-
     print("calibration information not found/corrupted: running calibration module")
-
     left = c.calibrate("Left").video(width, height)
     right = c.calibrate("Right").video(width, height)
     
-    
 settings = json.load(jsonFile)
-
 
 leftServo = tuple(settings['Left Servos Calibration'].values())
 rightServo = tuple(settings['Right Servos Calibration'].values())
