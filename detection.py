@@ -1,32 +1,55 @@
-import cv2
+import cv2 as cv
 import numpy as np
+from requests.models import encode_multipart_formdata
+import sizematters
+import threading
+import requests
 
-def detectFace(img, gray, port, val, *settings): 
+def video(cam):
+    
+    processFrame = True
 
-    faceCas = cv2.CascadeClassifier('cascades/haarcascade_frontalface_default.xml')
+    while 1:
+        #Captures every frame of the video, processes it and then display it
+        _, cum = cam.read()
+        cum = cv.flip(cum, 1)
+        grayScale = cv.cvtColor(cum, cv.COLOR_BGR2GRAY)
+        face = detectFace(grayScale)
 
-    face = faceCas.detectMultiScale(gray, 1.07, 7, minSize = [30, 30])
+        if np.any(face) and processFrame:
+            not processFrame
+            newThread = threading.Thread(target=faceRecog, args=(cum,), daemon=True)
+            newThread.start()
 
-    fire = False
+        cv.imshow("shiddy", cum)
+        if cv.waitKey(10) == 27:
+            break
 
-    for (x, y, w, h) in face:
+def detectFace(gray): 
+    faceCascade = cv.CascadeClassifier("cascades/haarcascade_frontalface_default.xml")
+    face = faceCascade.detectMultiScale(gray, scaleFactor=1.05, minNeighbors=15)
+    return face
 
-        if not val: fire = True
+def faceRecog(img):
+    params = {
+        "api_key": "UN5V5OR6z1c0cqj4k_-HZI8q1DBoEwq0",
+        "api_secret": "-jVnsCfNvC-FG_3iGU1WHUMv5O6fIose",
+        "face_token1": "a84e77fbbe11cff01cbdaaec4f36f2d9",
+    }
+    verifyFaceRequest = requests.request(encode_multipart_formdata)
+def drawFaceDetections():
+    pass
 
-        coords = ""
-        
-        cv2.rectangle(img, (x, y), (x + w, y + h), (0, 255, 0), 2)
-        cv2.putText(img, "jar", (x, y+30), cv2.FONT_HERSHEY_COMPLEX, 0.8, (0, 255, 0), 1)
+def scuffedCountDown():
+    pass
+# x1 = settings[2][1] + (x / settings[0][0])
+# y1 = settings[2][3] - (y / settings[0][1])
 
-        x1 = settings[2][1] + (x / settings[0][0])
-        y1 = settings[2][3] - (y / settings[0][1])
+# x2 = settings[3][1] + (x / settings[1][0])
+# y2 = settings[3][2] + (y / settings[1][1])
+# c = np.intc(np.array([x1, y1, x2, y2]))
 
-        x2 = settings[3][1] + (x / settings[1][0])
-        y2 = settings[3][2] + (y / settings[1][1])
+# coords = f"{c[0]}:{c[1]},{c[2]}:{c[3]}/0\0"
 
-        c = np.intc(np.array([x1, y1, x2, y2]))
-
-        coords = f"{c[0]}:{c[1]},{c[2]}:{c[3]}/{int(fire)}\0"
-        
-        print(coords)
-        port.write(coords.encode())
+# print(coords)
+# port.write(coords.encode())
