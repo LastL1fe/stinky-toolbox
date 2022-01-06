@@ -1,4 +1,3 @@
-from typing import Match
 import cv2 as cv
 import numpy as np
 from requests.models import encode_multipart_formdata
