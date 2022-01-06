@@ -21,6 +21,7 @@ def video(cam):
 
         if np.any(face) and processFrame:
             not processFrame
+            cv.imwrite("thief scallywag", )
             newThread = threading.Thread(target=faceRecog, args=(cum,), daemon=True)
             newThread.start()
         elif not np.any(face) and not processFrame and not t.is_alive():
