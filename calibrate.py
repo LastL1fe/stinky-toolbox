@@ -52,26 +52,28 @@ class calibrate:
                 self.port.close()
                 cv.destroyAllWindows()
                 break
-        
+
+    #checks if the value of the slider is within the acceptable range (between the min and max values)
     def Change(self, val, name, *args):
 
-        if name == "X": self.serPointX = val
-        elif name == "Y": self.serPointY = val
+        if name == "X": self.serPointX = val #servo x value
+        elif name == "Y": self.serPointY = val #servo y value
 
-        accRange = range(args[0], args[1] + 1)
+        accRange = range(args[0], args[1] + 1) #args[0] and args[1] are the min and max
 
         if val not in accRange:
-            if val > args[1]:
+            if val > args[1]: #sets max if val is higher than the instance's max
                 if name == "X": self.xMax = val
                 else: self.yMax = val
                 print("{} max is: ".format(name) + str(args[1]))
-            elif val < args[0]:
+            elif val < args[0]: #sets min if val is lower than the instance's max
                 if name == "X": self.xMin = val
                 else: self.yMin = val
                 print("{} min is: ".format(name) + str(args[0]))
-        else:
+        else: #prints slider value
             print("{} value is: ".format(name) + str(val))
 
+        #self explanatory haha cum
         if self.name == "Left":
             self.port.write("{}:{},90:90\0".format((self.serPointX), (self.serPointY)).encode())
         else:
@@ -87,6 +89,8 @@ class calibrate:
             }
         }  
 
+        #kinda scuffed code, as of 1/15/22 i dont feel like changing it, fite me
+        #overwrites existing calibration
         try:
             settings = json.load(open("calibration.json"))
             settings.update(self.data)
