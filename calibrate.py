@@ -59,14 +59,14 @@ class calibrate:
         if name == "X": self.serPointX = val #servo x value
         elif name == "Y": self.serPointY = val #servo y value
 
-        accRange = range(args[0], args[1] + 1) #args[0] and args[1] are the min and max
+        accRange = range(args[0], args[1] + 1) #args[0] and args[1] are the min and max (could be x or y depending on callback parameters)
 
         if val not in accRange:
             if val > args[1]: #sets max if val is higher than the instance's max
                 if name == "X": self.xMax = val
                 else: self.yMax = val
                 print("{} max is: ".format(name) + str(args[1]))
-            elif val < args[0]: #sets min if val is lower than the instance's max
+            elif val < args[0]: #sets min if val is lower than the instance's min
                 if name == "X": self.xMin = val
                 else: self.yMin = val
                 print("{} min is: ".format(name) + str(args[0]))
