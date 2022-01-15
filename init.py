@@ -24,7 +24,7 @@ resetPos()
 
 try:
     jsonFile = open("calibration.json", "r")
-except (Exception, JSONDecodeError):
+except(Exception, JSONDecodeError):
     port.close()
     print("calibration information not found/corrupted: running calibration module")
     left = c.calibrate("Left").video(width, height)
