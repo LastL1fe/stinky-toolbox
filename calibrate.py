@@ -31,10 +31,11 @@ class calibrate:
     def video(self, width, height):
 
         assBeLike = cv.VideoCapture(0)
-        cv.namedWindow(self.name)
 
-        cv.createTrackbar("X Slider: ", self.name, 90, 180, lambda val: self.Change(val, "X", self.xMin, self.xMax))
-        cv.createTrackbar("Y Slider: ", self.name, 90, 180, lambda val: self.Change(val, "Y", self.yMin, self.yMax))
+        cv.namedWindow(self.name)
+        cv.createTrackbar("X Slider: ", self.name, self.serPointX, 180, lambda val: self.Change(val, "X", self.xMin, self.xMax))
+        cv.createTrackbar("Y Slider: ", self.name, self.serPointY, 180, lambda val: self.Change(val, "Y", self.yMin, self.yMax))
+        cv.createButton("reset", self.resetButton, ("X Slider: ", "Y: Slider"))
 
         sizematters.rez(assBeLike, width, height)
 
@@ -76,8 +77,6 @@ class calibrate:
         else:
             self.port.write("90:90,{}:{}\0".format((self.serPointX), (self.serPointY)).encode())
 
-        print(self.serPointY)
-
     def updateJson(self):  
         self.data = {
             "{}".format((self.name)) + " Servos Calibration":{
@@ -98,4 +97,9 @@ class calibrate:
         except (FileNotFoundError, JSONDecodeError):
             with open("calibration.json", "w") as settings:
                 json.dump(self.data, settings)
+
+    def resetButton(self, xTrackbar, yTrackBar):
+        cv.setTrackbarPos(xTrackbar, self.name, 90)
+        cv.setTrackbarPos(yTrackBar, self.name, 90)
+
 #eat my ass 

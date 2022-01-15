@@ -1,3 +1,4 @@
+from base64 import encode
 import cv2 as cv
 import numpy as np
 from requests.models import encode_multipart_formdata
@@ -20,7 +21,7 @@ def video(cam):
 
         if np.any(face) and processFrame:
             not processFrame
-            cv.imwrite("thief scallywag", )
+            
             newThread = threading.Thread(target=faceRecog, args=(cum,), daemon=True)
             newThread.start()
         elif not np.any(face) and not processFrame and not t.is_alive():
