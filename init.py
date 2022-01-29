@@ -12,7 +12,7 @@ def resetPos():
 assBeLike = cv.VideoCapture(0)
 
 if not assBeLike.isOpened():
-    print("not openable you dipshit")
+    print("not openable dipshit")
     exit()
 
 width = 600
@@ -40,5 +40,30 @@ xConst1, yConst1, xConst2, yConst2 = calculate.calc(width, height, leftServo, ri
 
 if __name__ == "__main__":
     dec.video(assBeLike)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 #funni 69 numbr

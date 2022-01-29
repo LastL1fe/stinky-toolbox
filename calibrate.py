@@ -24,7 +24,7 @@ class calibrate:
         except serial.SerialException:
             print("port not open, will continue with calibration")
 
-    #reset the pos of the servos before running functions
+    #reset the pos of the servos
     def resetPos(self):
         self.port.write("90:90,90:90\0".encode())
 

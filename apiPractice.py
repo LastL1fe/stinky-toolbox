@@ -22,7 +22,7 @@ def threadedShit(img):
     print(data.text)
 
 camera = cv.VideoCapture(0)
-sizematters.rez(camera, 200, 200)
+sizematters.rez(camera, 600, 600)
 
 time.sleep(1)
 
@@ -37,11 +37,11 @@ while 1:
 
     face = faceCascade.detectMultiScale(shiddyButInGray, scaleFactor=1.05, minNeighbors=15)
 
-    cv.imshow("god i fucking want to die",shiddy)
+    cv.imshow("god i want to fucking die",shiddy)
 
     if np.any(face) and not facialRecog:
         facialRecog = True
-        createThread(shiddyButInGray)
+        #createThread(shiddyButInGray)
 
     if cv.waitKey(10) == 27:
         break

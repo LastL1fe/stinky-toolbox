@@ -1,27 +1,39 @@
 const express = require('express');
 const app = require('ipware')().get_ip;
-const axios = require('axios');
+const busboy = require('connect-busboy');
+const fs = require('fs');
+const { exec } = require("child_process");
+const path = require('path');
 const ass = express(); //im contrarian
 const port = 8000;
 
+ass.use(busboy({ "immediate": true }))
 ass.use('/img', express.static(__dirname + '/img'));
+ass.use('/mural', express.static(__dirname + '/mural'));
 
 ass.get("/", (req, res) => {
-    let ip = app(req)
-    console.log(ip)
-    //console.log(req)
-    res.send("This was a test of your intelligence and sense of security. If you're seeing this screen, then your IP address has already been stolen and logged. This shows just how easy and quick it is for criminals to steal your IP address, log it, and use it for nefarius reasons. (I don't save IP addresses. My web server simply records IP addresses and deletes them when it's refreshed.)");
-    res.end()
+    const htmlPage = fs.createReadStream(__dirname + '/index.html');
+    res.writeHead(200, {"Content-Type": "text/html"});
+    htmlPage.pipe(res);
 });
 
-ass.post("/img", (req, res) => {
-    //nothing yet
+ass.post("/upload", (req, res) => {
+    req.busboy.on('file', (name, file, info) => {
+        const saveDir = __dirname + "/mural";
+        file.pipe(fs.createWriteStream(path.join(saveDir, `/${name}.png`)));
+    });
 });
 
-ass.get("/img", (req, res) => {
-    res.send("ye")
-    console.log(req)
-    res.end()
+ass.get("/shutdown", (req, res) => {
+    res.send("lol get your pc shutdown nerd");
+    exec('restart /r /t 1');
+    res.end();
+});
+
+ass.get("/upload", (req, res) => {    
+    console.log("lmao this idiot got their ip address stolen: " + JSON.stringify(app(req)));
+    res.send("this is a test");
+    res.end();
 });
 
 ass.listen(port, () => console.log(`eating ass on port ${port}`));
