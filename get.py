@@ -1,9 +1,16 @@
-from requests_toolbelt import MultipartEncoder
-import requests
-import cv2 as cv
-from random import randrange
-import pprint
+#code i didnt use lmao
 import json
+import pprint
+from random import randrange
+import threading
+from traceback import print_tb
+
+import cv2 as cv
+from numpy import rec
+import requests
+
+import aiohttp
+import asyncio
 
 # def post():
     # files = {f"{randrange(0, 864846854684684)}": open("temp/temp.png", "rb")}
@@ -27,13 +34,26 @@ import json
 #         cv.destroyAllWindows()
 #         break
 
-params = {
-    "api_key": "UN5V5OR6z1c0cqj4k_-HZI8q1DBoEwq0",
-    "api_secret": "-jVnsCfNvC-FG_3iGU1WHUMv5O6fIose",
-    "image_url1": "http://76.234.138.246:8000/img/faceass.png"
-}
+async def recog():
+    async with aiohttp.ClientSession() as bussy:
+        url = "https://api-us.faceplusplus.com/facepp/v3/compare"
+        params = {
+            "api_key": "UN5V5OR6z1c0cqj4k_-HZI8q1DBoEwq0",
+            "api_secret": "-jVnsCfNvC-FG_3iGU1WHUMv5O6fIose",
+            "image_url1": "http://76.234.138.246:8000/img/faceass.png",
+            "image_file2": open("temp/temp.png", "rb")
+        }
 
-verifyFaceRequest = requests.post(url="https://api-us.faceplusplus.com/facepp/v3/compare", params=params, files={"image_file2": open("temp/temp.png", "rb")})
-pp = pprint.PrettyPrinter(depth=6)
+        async with bussy.post(url, data=params) as res:
+            shit = await res.json()
+            print(shit)
 
-pp.pprint(verifyFaceRequest.json())
+asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
+asyncio.run(recog())
+
+def stuffIdk():
+    print("fuck my ass")
+
+t = threading.Timer(2, stuffIdk)
+t.start()
+print(t.is_alive())

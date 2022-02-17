@@ -21,6 +21,7 @@ ass.post("/upload", (req, res) => {
     req.busboy.on('file', (name, file, info) => {
         const saveDir = __dirname + "/mural";
         file.pipe(fs.createWriteStream(path.join(saveDir, `/${name}.png`)));
+        
     });
 });
 

@@ -19,6 +19,7 @@ class calibrate:
         self.serPointY = 90 
         self.yMax = 90
         self.yMin = 90
+
         try:
             self.port = serial.Serial('COM3', 9600, timeout = 0.02)
         except serial.SerialException:
@@ -43,9 +44,10 @@ class calibrate:
             #Captures every frame of the video, processes it and then display it
             _, cum = assBeLike.read()
             cum = cv.flip(cum, 1)
+            gray = cv.cvtColor(cum, cv.COLOR_BGR2GRAY)
 
-            cv.imshow(self.name, cum)
-       
+            self.drawDetection(gray, cum)
+
             if cv.waitKey(10) == 27:
                 self.updateJson()
                 self.resetPos()
@@ -53,13 +55,15 @@ class calibrate:
                 cv.destroyAllWindows()
                 break
 
+            cv.imshow(self.name, cum)
+
     #checks if the value of the slider is within the acceptable range (between the min and max values)
     def Change(self, val, name, *args):
 
         if name == "X": self.serPointX = val #servo x value
         elif name == "Y": self.serPointY = val #servo y value
 
-        accRange = range(args[0], args[1] + 1) #args[0] and args[1] are the min and max (could be x or y depending on callback parameters)
+        accRange = range(args[0], args[1] + 1) #args[0] and args[1] are the min and max (could be x or y depending on function parameters)
 
         if val not in accRange:
             if val > args[1]: #sets max if val is higher than the instance's max
@@ -73,11 +77,18 @@ class calibrate:
         else: #prints slider value
             print("{} value is: ".format(name) + str(val))
 
-        #self explanatory haha cum
+        #self explanatory haha cum lack of comedic maturity go brrrrrr
         if self.name == "Left":
             self.port.write("{}:{},90:90\0".format((self.serPointX), (self.serPointY)).encode())
         else:
             self.port.write("90:90,{}:{}\0".format((self.serPointX), (self.serPointY)).encode())
+
+    def drawDetection(self, gray, img):
+        faceCas = cv.CascadeClassifier("cascades/haarcascade_frontalface_default.xml")
+        face = faceCas.detectMultiScale(gray, scaleFactor=1.05, minNeighbors=15)
+
+        for (x,y,w,h) in face:
+            cv.rectangle(img, (x+w, y+h), (0, 0, 255), 2)
 
     def updateJson(self):  
         self.data = {
@@ -89,7 +100,7 @@ class calibrate:
             }
         }  
 
-        #kinda scuffed code, as of 1/15/22 i dont feel like changing it, fite me
+        #kinda overengineered code, as of 2/13/22 i dont feel like changing it, eat the brownest part of my ass
         #overwrites existing calibration
         try:
             settings = json.load(open("calibration.json"))

@@ -1,10 +1,14 @@
 #imports important modules
+import json
 from json.decoder import JSONDecodeError
-import json, serial
+
+import cv2 as cv
+import serial
+
 import calculate
-import detection as dec
-import cv2 as cv, sizematters as size
 import calibrate as c
+import detection as dec
+import sizematters as size
 
 def resetPos():
     port.write("90:90,90:90\0".encode())
@@ -39,11 +43,7 @@ rightServo = tuple(settings['Right Servos Calibration'].values())
 xConst1, yConst1, xConst2, yConst2 = calculate.calc(width, height, leftServo, rightServo)
 
 if __name__ == "__main__":
-    dec.video(assBeLike)
-
-
-
-
+    dec.video(assBeLike, port, leftServo, rightServo, (xConst1, yConst1, xConst2, yConst2))
 
 
 
