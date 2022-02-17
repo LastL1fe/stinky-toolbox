@@ -41,7 +41,7 @@ async def recog():
             "api_key": "UN5V5OR6z1c0cqj4k_-HZI8q1DBoEwq0",
             "api_secret": "-jVnsCfNvC-FG_3iGU1WHUMv5O6fIose",
             "image_url1": "http://76.234.138.246:8000/img/faceass.png",
-            "image_file2": open("temp/temp.png", "rb")
+            "image_file2": open("../temp/temp.png", "rb")
         }
 
         async with bussy.post(url, data=params) as res:
