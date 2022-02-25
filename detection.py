@@ -39,7 +39,7 @@ def video(cam, port, leftServoCal, rightServoCal, consts):
             newTimerCreation = True
         elif np.any(face) and not processFrame:
             if not confidence: pass 
-            else: drawFaceDetections(face, cum, confidence > 75, port, leftServoCal, rightServoCal, consts)
+            else: drawFaceDetections(face, cum, confidence > 70, port, leftServoCal, rightServoCal, consts)
 
         if cv.waitKey(33) == 27:
             break

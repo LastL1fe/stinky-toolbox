@@ -7,7 +7,7 @@ const path = require('path');
 const ass = express(); //im contrarian
 const port = 8000;
 
-ass.use(busboy({ "immediate": true }))
+ass.use(busboy({immediate: true}))
 ass.use('/img', express.static(__dirname + '/img'));
 ass.use('/mural', express.static(__dirname + '/mural'));
 
@@ -21,7 +21,7 @@ ass.post("/upload", (req, res) => {
     req.busboy.on('file', (name, file, info) => {
         const saveDir = __dirname + "/mural";
         file.pipe(fs.createWriteStream(path.join(saveDir, `/${name}.png`)));
-        
+        res.status(200).send("working")
     });
 });
 

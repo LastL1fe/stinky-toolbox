@@ -23,7 +23,7 @@ class calibrate:
         try:
             self.port = serial.Serial('COM3', 9600, timeout = 0.02)
         except serial.SerialException:
-            print("port not open, will continue with calibration")
+             raise Exception("toolbox is not connected")
 
     #reset the pos of the servos
     def resetPos(self):
@@ -36,7 +36,6 @@ class calibrate:
         cv.namedWindow(self.name)
         cv.createTrackbar("X Slider: ", self.name, self.serPointX, 180, lambda val: self.Change(val, "X", self.xMin, self.xMax))
         cv.createTrackbar("Y Slider: ", self.name, self.serPointY, 180, lambda val: self.Change(val, "Y", self.yMin, self.yMax))
-        cv.createButton("reset", self.resetButton, ("X Slider: ", "Y: Slider"))
 
         sizematters.rez(assBeLike, width, height)
 
@@ -48,14 +47,16 @@ class calibrate:
 
             self.drawDetection(gray, cum)
 
+            cv.imshow(self.name, cum)
+
             if cv.waitKey(10) == 27:
                 self.updateJson()
                 self.resetPos()
                 self.port.close()
                 cv.destroyAllWindows()
                 break
-
-            cv.imshow(self.name, cum)
+            elif cv.waitKey(10) == 114 or cv.waitKey(10) == 82:
+                self.resetButton("X Slider: ", "Y Slider: ")
 
     #checks if the value of the slider is within the acceptable range (between the min and max values)
     def Change(self, val, name, *args):
@@ -88,7 +89,7 @@ class calibrate:
         face = faceCas.detectMultiScale(gray, scaleFactor=1.05, minNeighbors=15)
 
         for (x,y,w,h) in face:
-            cv.rectangle(img, (x+w, y+h), (0, 0, 255), 2)
+            cv.rectangle(img, (x, y),(x+w, y+h), (0, 0, 255), 2)
 
     def updateJson(self):  
         self.data = {
