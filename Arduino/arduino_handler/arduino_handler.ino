@@ -60,9 +60,14 @@ void serialEvent(){
         digitalWrite(squirtPin, LOW);
         lcd.clear();
         lcd.write("eat shit");
-        delay(3000);
+        delay(5000);
         digitalWrite(squirtPin, HIGH); 
         boolVal = false;
+        lcd.clear();
+        lcd.write("resetting");
+        delay(3000);
+        lcd.clear();
+        lcd.write("waiting for coords");
         Serial.begin(9600);
        }
     }
@@ -79,6 +84,8 @@ void overrideMain(){
     OWfire = true;
     lcd.clear();
     lcd.write("eat shit bitch");
+    leftX.write(110);
+    rightX.write(60);
     digitalWrite(squirtPin, LOW);
     delay(3000);
     digitalWrite(squirtPin, HIGH);

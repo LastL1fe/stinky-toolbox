@@ -48,7 +48,7 @@ def video(cam, port, leftServoCal, rightServoCal, consts):
         cv.imshow("shiddy", cum)
 
 def detectFace(gray, faceCascade):
-    face = faceCascade.detectMultiScale(gray, scaleFactor=1.05, minNeighbors=15)
+    face = faceCascade.detectMultiScale(gray, scaleFactor=1.05, minNeighbors=6)
     return face
 
 def saveFace(face, img):
@@ -95,10 +95,12 @@ def drawFaceDetections(face, cum, confidence, port, leftServoCal, rightServoCal,
     if confidence:
         for (x,y,w,h) in face:
             cv.rectangle(cum, (x, y), (x+w, y+h), (0, 255, 0), 2)
+        firePort(port, int(confidence)-1, leftServoCal, rightServoCal, consts, (x, y))
     else:
         for (x,y,w,h) in face:
             cv.rectangle(cum, (x, y), (x+w, y+h), (0, 0, 255), 2)
-        firePort(port, confidence, leftServoCal, rightServoCal, consts, (x, y))
+
+        firePort(port, int(confidence)+1, leftServoCal, rightServoCal, consts, (x, y))
 
 def firePort(port, confidence, leftServoCal, rightServoCal, consts, coords):
     #settings
@@ -113,10 +115,10 @@ def firePort(port, confidence, leftServoCal, rightServoCal, consts, coords):
     y1 = yTop + (y / y1Const)
 
     x2 = xLeft2 + (x / x2Const)
-    y2 = yTop2 + (y / y2Const)
+    y2 = yTop2 - (y / y2Const)
     c = np.intc(np.array([x1, y1, x2, y2]))
 
-    coords = f"{c[0]}:{c[1]},{c[2]}:{c[3]}/{int(confidence)}\0"
+    coords = f"{c[0]}:{c[1]},{c[2]}:{c[3]}/{confidence}\0"
 
     print(coords)
     port.write(coords.encode())
