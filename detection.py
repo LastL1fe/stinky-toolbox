@@ -39,9 +39,10 @@ def video(cam, port, leftServoCal, rightServoCal, consts):
             newTimerCreation = True
         elif np.any(face) and not processFrame:
             if not confidence: pass 
-            else: drawFaceDetections(face, cum, confidence > 70, port, leftServoCal, rightServoCal, consts)
+            else: drawFaceDetections(face, cum, confidence > 100, port, leftServoCal, rightServoCal, consts)
 
         if cv.waitKey(33) == 27:
+            port.write("90:90,90:90/0\0".encode())
             break
 
         cv.imshow("shiddy", cum)
@@ -97,24 +98,25 @@ def drawFaceDetections(face, cum, confidence, port, leftServoCal, rightServoCal,
     else:
         for (x,y,w,h) in face:
             cv.rectangle(cum, (x, y), (x+w, y+h), (0, 0, 255), 2)
-        firePort(port, confidence, leftServoCal, rightServoCal, consts)
+        firePort(port, confidence, leftServoCal, rightServoCal, consts, (x, y))
 
-def firePort(port, confidence, leftServoCal, rightServoCal, consts):
+def firePort(port, confidence, leftServoCal, rightServoCal, consts, coords):
     #settings
+    x, y = coords
     xRight, xLeft, yTop, yBot = leftServoCal
     xRight2, xLeft2, yTop2, yBot2 = rightServoCal
     x1Const, y1Const, x2Const, y2Const = consts
 
-    print("working")
+    #print("working")
 
-    # x1 = settings[2][1] + (x / settings[0][0])
-    # y1 = settings[2][3] - (y / settings[0][1])
+    x1 = xRight - (x / x1Const)
+    y1 = yTop - (y / y1Const)
 
-    # x2 = settings[3][1] + (x / settings[1][0])
-    # y2 = settings[3][2] + (y / settings[1][1])
-    # c = np.intc(np.array([x1, y1, x2, y2]))
+    x2 = xLeft2 + (x / x2Const)
+    y2 = yTop2 + (y / y2Const)
+    c = np.intc(np.array([x1, y1, x2, y2]))
 
-    # coords = f"{c[0]}:{c[1]},{c[2]}:{c[3]}/{int(confidence)}\0"
+    coords = f"{c[0]}:{c[1]},{c[2]}:{c[3]}/{int(confidence)}\0"
 
-    # print(coords)
-    # port.write(coords.encode())
+    print(coords)
+    port.write(coords.encode())

@@ -25,7 +25,7 @@ void setup() {
   rightX.attach(5);
   rightY.attach(6);
 
-  leftX.write(90);
+  //rightX.write(150);
 
   pinMode(squirtPin, OUTPUT);
   digitalWrite(squirtPin, HIGH);
@@ -59,7 +59,7 @@ void serialEvent(){
         Serial.end();
         digitalWrite(squirtPin, LOW);
         lcd.clear();
-        lcd.write("get sprayed");
+        lcd.write("eat shit");
         delay(3000);
         digitalWrite(squirtPin, HIGH); 
         boolVal = false;
@@ -78,7 +78,7 @@ void overrideMain(){
   if (not boolVal){
     OWfire = true;
     lcd.clear();
-    lcd.write("get sprayed nerd");
+    lcd.write("eat shit bitch");
     digitalWrite(squirtPin, LOW);
     delay(3000);
     digitalWrite(squirtPin, HIGH);
