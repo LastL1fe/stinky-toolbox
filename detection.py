@@ -109,8 +109,8 @@ def firePort(port, confidence, leftServoCal, rightServoCal, consts, coords):
 
     #print("working")
 
-    x1 = xRight - (x / x1Const)
-    y1 = yTop - (y / y1Const)
+    x1 = xLeft + (x / x1Const)
+    y1 = yTop + (y / y1Const)
 
     x2 = xLeft2 + (x / x2Const)
     y2 = yTop2 + (y / y2Const)
