@@ -8,6 +8,7 @@ import serial
 #this took 4 months to make btw because i had to learn computer vision lmao
 
 class calibrate:
+    #kinda overengineered code, as of 2/13/22 i dont feel like changing it, eat the brownest part of my ass
 
     def __init__(self, name):
         
@@ -101,7 +102,6 @@ class calibrate:
             }
         }  
 
-        #kinda overengineered code, as of 2/13/22 i dont feel like changing it, eat the brownest part of my ass
         #overwrites existing calibration
         try:
             settings = json.load(open("calibration.json"))
