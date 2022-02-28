@@ -25,7 +25,7 @@ void setup() {
   rightX.attach(5);
   rightY.attach(6);
 
-  //rightX.write(150);
+  rightY.write(63);
 
   pinMode(squirtPin, OUTPUT);
   digitalWrite(squirtPin, HIGH);
@@ -66,8 +66,7 @@ void serialEvent(){
         lcd.clear();
         lcd.write("resetting");
         delay(3000);
-        lcd.clear();
-        lcd.write("waiting for coords");
+        resetPos();
         Serial.begin(9600);
        }
     }
@@ -84,15 +83,14 @@ void overrideMain(){
     OWfire = true;
     lcd.clear();
     lcd.write("eat shit bitch");
-    leftX.write(110);
+    leftX.write(120);
     rightX.write(60);
     digitalWrite(squirtPin, LOW);
     delay(3000);
     digitalWrite(squirtPin, HIGH);
     delay(3000);
     OWfire = false;
-    lcd.clear();
-    lcd.write("waiting for coords");
+    resetPos();
   }
 }
 
@@ -105,6 +103,15 @@ void parseBool(String coordsparse){
  coordsparse.remove(0, coordsparse.indexOf("/") + 1);
  if (coordsparse == "1"){boolVal = true;}
  else{boolVal = false;}
+}
+
+void resetPos(){
+  lcd.clear();
+  lcd.write("waiting for coords");
+  leftX.write(90);
+  rightX.write(90);
+  leftY.write(90);
+  rightY.write(90);
 }
 
 int parseX1(String coords){

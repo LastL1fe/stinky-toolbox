@@ -39,7 +39,7 @@ def video(cam, port, leftServoCal, rightServoCal, consts):
             newTimerCreation = True
         elif np.any(face) and not processFrame:
             if not confidence: pass 
-            else: drawFaceDetections(face, cum, confidence > 100, port, leftServoCal, rightServoCal, consts)
+            else: drawFaceDetections(face, cum, confidence > 60, port, leftServoCal, rightServoCal, consts)
 
         if cv.waitKey(33) == 27:
             port.write("90:90,90:90/0\0".encode())
@@ -115,7 +115,7 @@ def firePort(port, confidence, leftServoCal, rightServoCal, consts, coords):
     y1 = yTop + (y / y1Const)
 
     x2 = xLeft2 + (x / x2Const)
-    y2 = yTop2 - (y / y2Const)
+    y2 = yBot - (y / y2Const)
     c = np.intc(np.array([x1, y1, x2, y2]))
 
     coords = f"{c[0]}:{c[1]},{c[2]}:{c[3]}/{confidence}\0"

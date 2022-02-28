@@ -10,11 +10,11 @@ import serial
 class calibrate:
     #kinda overengineered code, as of 2/13/22 i dont feel like changing it, eat the brownest part of my ass
 
-    def __init__(self, name):
+    def __init__(self, name, startingPointX):
         
         self.data = {}
         self.name = name
-        self.serPointX = 90
+        self.serPointX = startingPointX
         self.xMax = 90
         self.xMin = 90
         self.serPointY = 90 
