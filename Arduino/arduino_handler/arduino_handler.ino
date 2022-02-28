@@ -25,8 +25,8 @@ void setup() {
   rightX.attach(5);
   rightY.attach(6);
 
-  rightX.write(60);
-  rightY.write(85);
+  //rightX.write(60);
+//  rightY.write(85);
 
   pinMode(squirtPin, OUTPUT);
   digitalWrite(squirtPin, HIGH);
