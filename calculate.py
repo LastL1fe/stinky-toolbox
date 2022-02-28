@@ -4,7 +4,7 @@ def calc(width, height, *args):
     xMaxR, xMinR, yMaxR, yMinR = args[1]
 
     servoXConstL = width / (xMaxL - xMinL)
-    servoYConstL = height / (yMaxL - yMinL)
+    servoYConstL = height / (yMinL - yMaxL)
 
     servoXConstR = width / (xMaxR - xMinR)
     servoYConstR = height / (yMinR - yMaxR)
